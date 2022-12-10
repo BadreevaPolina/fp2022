@@ -3,6 +3,7 @@ type id = string
 type value =
   | Numbers of float
   | Characters of char
+  | List of string
 
 type functions =
   | Plus (** + *)
@@ -39,7 +40,7 @@ type variables =
   | Define_var (** ← *)
   | Change_var (** ↩ *)
 
-type modify_list =
+type list_modify =
   | Under (** ⌾ *)
   | Pick (** ⊑ *)
   | Take (** ↑ *)
@@ -50,6 +51,26 @@ type identity_functions =
   | Identity_left (** ⊣ *)
   | Identity_right (** ⊢ *)
 
+type list_notation =
+  | Range (** ↕ *)
+  | Double_quote (** "" *)
+  | Left_angle (** ⟨ *)
+  | Right_angle (** ⟩ *)
+  | Comma_separator (** , *)
+  | Rhomb_separator (** ⋄ *)
+  | Newline_separator (** newline *)
+  | Comment (** # *)
+  | Ligature (** ‿ *)
+
+type list_functions =
+  | Enlist (** ⋈ *)
+  | Concatenation (** ∾ *)
+  | Rotate_list (** ⌽ *)
+
+type list_modificators =
+  | Each (** ¨ *)
+  | Fold (** ´ *)
+
 and expr =
   | Subject of value
   | Binop of functions * expr * expr
@@ -59,5 +80,12 @@ and expr =
   | Bincomb of combinators_bin * expr * expr
   | Uncomb of combinators_un * expr
   | Var of variables * expr * expr
-  | Modiflist of modify_list * expr (* change *)
+  | Modiflist of list_modify * expr
   | Ident of identity_functions * expr * expr
+  | Notatelist of list_notation * expr
+  | Binnotlist of list_notation * expr * expr
+  | Listfunc of list_functions * list_notation * expr
+  | Binlistfunc of list_functions * list_notation * expr * expr
+  | Listmod of list_modificators * list_functions * list_notation * expr
+  | Binlistmod of list_modificators * list_functions * list_notation * expr * expr
+  | Listmodnotfunc of list_modificators * functions * list_notation * expr
