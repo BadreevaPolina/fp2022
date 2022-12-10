@@ -1,6 +1,6 @@
 (library
- (name lambda_lib)
- (public_name Lambda.Lib)
+ (name BQN_lib)
+ (public_name BQN.Lib)
  (modules Ast Lambda Interpret Parser Printast Pprintast utils Tests)
  (modules_without_implementation ast)
  (libraries base angstrom)

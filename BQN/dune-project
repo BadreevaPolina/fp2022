@@ -6,19 +6,18 @@
 
 (license LGPL-3.0-or-later)
 
-(authors "FIXME Vasya Pupkin")
+(authors "Badreeva Polina, Bukhalova Anna")
 
-(maintainers "FIXME Vasya Pupkin")
+(maintainers "Badreeva Polina, Bukhalova Anna")
 
-(bug_reports "FIXME where to put bug reports about the code")
+(bug_reports "not specified")
 
-(homepage "FIXME Homepage")
+(homepage "not specified")
 
 (package
- (name Lambda) ; FIXME and regenerate .opam file using 'dune build @install'
- (synopsis "FIXME An interpreter for language")
- (description
-  "FIXME. A longer description, for example, which are the most interesing features being supported, etc.")
+ (name BQN) ; FIXME and regenerate .opam file using 'dune build @install'
+ (synopsis "BQN")
+ (description "BQN")
  (version 0.1)
  (depends
   dune
