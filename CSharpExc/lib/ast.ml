@@ -25,15 +25,15 @@ type values =
   | Void'
   | Null'
   | String' of string
-  | Class' of objectRefers
+  | Class' of object_refers
 [@@deriving show { with_path = false }]
 
-and objectRefers =
+and object_refers =
   | ObjectNull
   | ObjectRef of string * string option (** key * parent key *)
 [@@deriving show { with_path = false }]
 
-type binOps =
+type bin_ops =
   | Plus
   | Minus
   | Multiply
@@ -53,7 +53,7 @@ type compares =
 type expr =
   | Value of values
   | Variable of string
-  | Binop of binOps * expr * expr
+  | Binop of bin_ops * expr * expr
   | Compare of compares * expr * expr
   | And of expr * expr
   | Or of expr * expr
