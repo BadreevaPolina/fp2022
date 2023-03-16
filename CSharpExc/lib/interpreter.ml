@@ -382,7 +382,7 @@ module Interpreter (M : MONADERROR) = struct
           | None -> return in_context)
        | _ -> error (str_of_error IncorrectType))
     | While (expr, stat) ->
-      let rec eval_loop loop_stat context = (** look at looping *)
+      let rec eval_loop loop_stat context =
         if context.runtime_flag = WasBreak
         then (
           match loop_stat with
@@ -458,7 +458,7 @@ module Interpreter (M : MONADERROR) = struct
         let* context' = iter_classes var_seq context' in
         return context'
       in
-      let rec eval_loop body_st af_list context = (** while the condition is true*)
+      let rec eval_loop body_st af_list context =
         let* cond_context =
           match expr_opt with
           | None -> return { context with last_result = Bool' true }
@@ -634,7 +634,7 @@ module Interpreter (M : MONADERROR) = struct
             ; last_result = return_value
             ; level = f_context.level - 1
             }
-        | Some (Block _ as finally_stat) -> (** save always a flag for finally *)
+        | Some (Block _ as finally_stat) ->
           let saved_flag = finally_context.runtime_flag in
           let* f_context = eval_finally_statement finally_stat class_map in
           return { f_context with runtime_flag = saved_flag; level = f_context.level - 1 }
