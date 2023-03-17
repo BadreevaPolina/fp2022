@@ -197,9 +197,9 @@ module Expr = struct
         >> let* x = lexeme primar_expr in
            return (Binop (Minus, Value (Int' 0), x)))
       ; (let* x = lexeme primar_expr in
-         token "++" >> return (Increment x))
+         token "++" >> return (IncrementPost x))
       ; (let* x = lexeme primar_expr in
-         token "--" >> return (Decrement x))
+         token "--" >> return (DecrementPost x))
       ; primar_expr
       ]
       input
@@ -299,10 +299,10 @@ module Statement = struct
       [ (let* const = const in
          let* var_type = define_type in
          let* var_pair = sep_by1 helper (token ",") in
-         token ";" >> return (VariebleDeclare (Some const, var_type, var_pair)))
+         token ";" >> return (VariableDeclare (Some const, var_type, var_pair)))
       ; (let* var_type = define_type in
          let* var_pair = sep_by1 helper (token ",") in
-         token ";" >> return (VariebleDeclare (None, var_type, var_pair)))
+         token ";" >> return (VariableDeclare (None, var_type, var_pair)))
       ]
       input
 
@@ -420,8 +420,9 @@ module Fields_and_classes = struct
     let helper =
       let* name = ident in
       token "="
-      >> let* value = expr in
-         return (name, Some value) <|> return (name, None)
+      >> (let* value = expr in
+          return (name, Some value))
+      <|> return (name, None)
     in
     let* type' = define_type in
     let* var_list = sep_by helper (token ",") in
@@ -458,6 +459,8 @@ module Fields_and_classes = struct
     = Some (VariableField (Int, [ "x", Some (Value (Int' 10)) ]))
   ;;
 
+  let%test _ = parsing field {| int x; |} = Some (VariableField (Int, [ "x", None ]))
+
   let%test _ =
     parsing
       parse_class
@@ -479,6 +482,32 @@ module Fields_and_classes = struct
            , [ [], VariableField (Float, [ "x", Some (Value (Float' 10.7)) ])
              ; ( [ Public ]
                , Method (Float, "Example", [], Block [ Return (Some (Variable "x")) ]) )
+             ] ))
+  ;;
+
+  let%test _ =
+    parsing
+      parse_class
+      {|
+               public class Exception
+               {
+                 public string Message;
+                 public string ToString()
+                 {  
+                  return Message;
+                 }
+               }
+           |}
+    = Some
+        (ClassDec
+           ( [ Public ]
+           , "Exception"
+           , None
+           , [ [ Public ], VariableField (String, [ "Message", None ])
+             ; ( [ Public ]
+               , Method
+                   (String, "ToString", [], Block [ Return (Some (Variable "Message")) ])
+               )
              ] ))
   ;;
 end

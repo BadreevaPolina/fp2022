@@ -5,4 +5,4 @@
  (libraries CSharpExc_lib))
 
 (cram
- (deps ./interpretRun.exe ../REPL.exe))
+ (deps ./interpretRun.exe))

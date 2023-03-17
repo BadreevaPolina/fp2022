@@ -6,17 +6,14 @@ License: LGPL for implementation code + WTFPL for test examles in miniLanguage
 
 Author: Vasy Pupkin, vasya@pupkin.com
 
-Features done (append only):
+Features done:
 
-- Parser  (for example)
-- interpreter of non-recursive functions (for example)
-- ...
-
-Features in progress (and TODOs):
-
-- Interpreter of recursive functions is not yet ready  (for example)
-- TODO: make pretty-printing less memory consuming (for example)
-- ...
+- Pекурсия, 
+стандартные конструкции, 
+целые и вещественные числа, 
+присваивание
+Try/Catch/Finally ( класс Exception )
+Тесты в папке Demos
 
 
 ##### Замечания по стилю кодирования

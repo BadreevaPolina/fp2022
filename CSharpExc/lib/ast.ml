@@ -59,8 +59,8 @@ type expr =
   | Or of expr * expr
   | Not of expr
   | Null
-  | Increment of expr
-  | Decrement of expr
+  | IncrementPost of expr
+  | DecrementPost of expr
   | ClassCreate of string * expr list
   | CallMethod of string * expr list
   | Assign of expr * expr
@@ -79,7 +79,7 @@ and statement =
   | Break
   | Continue
   | Return of expr option
-  | VariebleDeclare of modifier option * types * (string * expr option) list
+  | VariableDeclare of modifier option * types * (string * expr option) list
       (** modifier * type * declare *)
   | Print of expr
 [@@deriving show { with_path = false }]

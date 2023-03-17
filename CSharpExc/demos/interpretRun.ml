@@ -7,17 +7,13 @@ open CSharpExc_lib.Parser
 open CSharpExc_lib.Types_setup
 open CSharpExc_lib.Interpreter.Interpreter (CSharpExc_lib.Interpreter.Result)
 
-let print = function
-  | _ -> print_endline ""
-;;
-
 let interpretation class_list_ast class_map =
   match interpret_cl class_list_ast class_map with
-  | Error mas -> print_endline mas
+  | Error message -> print_endline message
   | Ok load_map ->
     (match start_interpret load_map with
-     | Error mas -> print_endline mas
-     | Ok res -> print res)
+     | Error message -> print_endline message
+     | Ok _ -> print_endline "")
 ;;
 
 let interpret s =

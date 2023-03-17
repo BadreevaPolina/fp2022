@@ -132,16 +132,7 @@ module Interpreter (M : MONADERROR) = struct
     | Binop (Plus, l, r) ->
       let* l_type = check_expr_type l context class_map in
       let l_arg = function
-        | Float ->
-          let* r_type = check_expr_type r context class_map in
-          let r_arg = function
-            | Float -> return Float
-            | Int -> return Int
-            | String -> return String
-            | _ -> error (str_of_error IncorrectType)
-          in
-          r_arg r_type
-        | Int ->
+        | Float | Int ->
           let* r_type = check_expr_type r context class_map in
           let r_arg = function
             | Float -> return Float
@@ -205,7 +196,7 @@ module Interpreter (M : MONADERROR) = struct
         | _ -> error (str_of_error IncorrectType)
       in
       pm value_type
-    | Increment value | Decrement value ->
+    | IncrementPost value | DecrementPost value ->
       let* value_type = check_expr_type value context class_map in
       let pm = function
         | Int -> return Int
@@ -318,7 +309,7 @@ module Interpreter (M : MONADERROR) = struct
   ;;
 
   let expr_in_statement = function
-    | Increment _ | Decrement _ | CallMethod (_, _) | Assign (_, _) -> true
+    | IncrementPost _ | DecrementPost _ | CallMethod (_, _) | Assign (_, _) -> true
     | _ -> false
   ;;
 
@@ -532,7 +523,7 @@ module Interpreter (M : MONADERROR) = struct
         let* new_context = eval_expr expr in_context class_map in
         let* new_context = eval_inc_dec new_context in
         return { new_context with runtime_flag = WasReturn }
-    | VariebleDeclare (modifier, vars_type, var_list) ->
+    | VariableDeclare (modifier, vars_type, var_list) ->
       let is_const : modifier option -> bool = function
         | Some Const -> true
         | _ -> false
@@ -878,7 +869,7 @@ module Interpreter (M : MONADERROR) = struct
              }
            in
            return (replace_var assign_context var_key var))
-      | Increment (Variable var_key) ->
+      | IncrementPost (Variable var_key) ->
         let* context =
           eval_expr
             (Assign (Variable var_key, Binop (Plus, Value (Int' 0), Variable var_key)))
@@ -886,7 +877,7 @@ module Interpreter (M : MONADERROR) = struct
             class_map
         in
         return { context with increment = var_key :: context.increment }
-      | Decrement (Variable var_key) ->
+      | DecrementPost (Variable var_key) ->
         let* context =
           eval_expr
             (Assign (Variable var_key, Binop (Minus, Value (Int' 0), Variable var_key)))

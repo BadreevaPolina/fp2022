@@ -27,7 +27,7 @@ module KeyMap = struct
 
   let pp pp_v ppf map =
     Format.fprintf ppf "@[[@[";
-    iter (fun k v -> Format.fprintf ppf "@[\"%s\": %a@],@\n" k pp_v v) map;
+    iter (fun k v -> Format.fprintf ppf "@[\"%S\": %a@],@\n" k pp_v v) map;
     Format.fprintf ppf "@]]@]"
   ;;
 end
